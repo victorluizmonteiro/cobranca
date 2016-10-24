@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns="http://w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout= "http://www.ultraq.net.nz/thymeleaf/layout">
+	  
+	  
+	<div class="alert alert-danger" th:if="${#fields.hasAnyErrors()}"> <!-- verfica se tem algum erro de validacao nos campos
+																				 do objeto recebido do controller -->
+		<div th:each="detailedError : ${#fields.detailedErrors()}"> <!-- pega a mensagem configurada no model para ser exibida -->
+			<span th:text="${detailedError.message}"> </span>
+			
+
+		
+		</div>
+	</div>
+</html>

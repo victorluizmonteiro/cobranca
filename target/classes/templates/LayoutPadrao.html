@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns= "http://w3.org/1999/xhtml"
+		xmlns:th= "http://www.thymeleaf.org"
+		xmlns:layout= "http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="UTF-8"/>
+	<!-- meta`s responsáveis por deixar a tela responsiva -->
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+<title>Insert Cobrança</title> <!--  o @ do thymeleaf resolve o problema do context path externo no tomcat -->
+<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}"/>
+<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-datepicker.standalone.min.css}"/>
+</head>
+<body>
+	<!-- Comando utilizado para incluir o menu de navegação nesta pagina -->
+	<header layout:include="Cabecalho"></header>
+	
+ <!-- Cria uma parte na tela para inserir  conteudos -->
+ <section layout:fragment="conteudo"></section>
+ 
+ <script th:src="@{/js/jquery-3.1.0.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/bootstrap-datepicker.min.js}"></script>
+<script th:src="@{/js/bootstrap-datepicker.pt-BR.min.js}"></script>
+<script th:src="@{/js/jquery.maskMoney.min.js}"></script>
+<script th:src="@{/js/cobranca.js}"></script>
+
+ </body>
+ </html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns="http://w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout= "http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorator ="LayoutPadrao"> <!-- decorator define qual layout vai decorar ou implementar essa tela -->
+<head>
+
+<title>Pesquisa de titulos</title>
+
+</head>
+<!--  Section que sera inserida na section do LayoutPadrao -->
+ <section layout:fragment="conteudo">
+ <div layout:include="MensagemGeral"></div>
+ <div class="panel panel-default">
+	<div class="panel-heading">
+		<div class="clearfix"> <!-- clearfix ajuda a concertar a tela quando se utilizada a class float do bootstrap -->
+			<h1 class="panel-title aw-titulo-panel">Pesquisa de titulos</h1>
+			<a class="btn btn-link aw-link-panel" th:href="@{/titulo/novo}">Novo Titulo</a>
+		</div>
+	</div>
+		<div class="panel-body">
+			
+									
+			<form method="GET" class="form-horizontal" th:action="@{/titulo}" th:object="${filtro}">
+	   			<div class="form-group">
+	   				<div class="col-sm-4">
+	   					<div class="input-group">
+	   						<input class="form-control"  th:field="*{descricao}" 
+	   								placeholder="Qual título você está procurando?"
+	   									autofocus="autofocus"></input>
+	   						<span class="input-group-btn">
+	   							<button type="submit" class="btn btn-default">
+	   								<i class="glyphicon glyphicon-search"></i>
+	   							</button>
+	   						</span>
+	   					</div>
+	   				</div>
+	   			</div>
+	   		</form>
+		
+			<table class=" table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th class="text-center col-md-1">#</th>
+						<th>Descrição</th>
+						<th class="text-center col-md-2">Data de vencimento</th>
+						<th class="text-right col-md-2">Valor</th>
+						<th class="text-center col-md-2">Status</th>
+						<th class="col-md-1"></th>	
+					
+					</tr>
+				</thead>
+				<tbody>
+					
+					<tr th:each="tit : ${titulos}">
+						<td class="text-center" th:text="${tit.codigo}"></td>
+						<td th:text="${tit.descricao}"></td>
+						<!-- Adicione {} na Data, ele converte para o padrão configurado pelo usuario -->
+						<td class="text-center" th:text="${{tit.dataVencimento}}"></td>  
+						<!-- Adicione | | entre a expressao para concatenar valores -->
+						<td class="text-right" th:text=" |R$${{tit.valor}}|"></td>
+						
+						<!-- classappend adiciona uma classe css  -->
+						<td class="text-center" th:attr="data-role= ${tit.codigo}" >
+							<span class="label"  th:text="${tit.status.descricao}" 
+							th:classappend="${tit.pendente ? 'label-danger' : 'label-success'}"></span>
+						</td>
+						<td class="text-center" ><!-- expressao @, é usada para montar links,podendo definir variaveiss -->
+							<a class="btn btn-link btn-xs" th:href="@{/titulo/{codigo}(codigo = ${tit.codigo})}" 
+										rel="tooltip" data-placement="top" title="Alterar">
+								<span class="glyphicon  glyphicon-pencil"></span>
+							</a>									
+									<!-- propriedades data, responsaveis por abrir o modal -->
+									<!-- attr é usado para puxar valores no javascript -->											
+									<!-- target = id do modal -->
+							<a class="btn btn-link btn-xs" data-toggle="modal" data-target="#confirmacaoExclusaoModal"
+										th:attr="data-codigo=${tit.codigo},data-descricao=${tit.descricao}"
+										rel="tooltip" data-placement="top" title="Excluir"	>			
+																															
+								<span class="glyphicon  glyphicon-remove"></span>
+							</a>
+							<!-- se for pendente,renderiza o link , js-atualizar é classe de marcação-->
+							<!-- th:href está montando a url para atualizar o status via ajax -->
+							<a class="btn btn-link btn-xs js-atualizar-status" th:if="${tit.pendente}" 
+								th:attr="data-codigo=${tit.codigo}"
+								rel="tooltip" data-placement="top" title="Receber" th:href="@{/titulo/{codigo}/receber(codigo =${tit.codigo})}">
+								<span class="glyphicon glyphicon-check"></span>
+							</a>
+					
+						</td>
+					</tr>
+					<tr>
+						
+						<td colspan="6" th:if="${#lists.isEmpty(titulos)}">Nenhum titulo Encontrado</td>
+					</tr>
+				</tbody>
+				
+		 </table>
+
+		<section layout:include="DialogoConfirmacaoExclusao"></section>			
+	</div>
+ </div>			
+	
+</section>
+
+</html>
